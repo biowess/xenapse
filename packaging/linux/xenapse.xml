@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/vnd.xenapse.diagram">
+    <comment>Xenapse Diagram</comment>
+    <glob pattern="*.xnp"/>
+    <icon name="application-vnd.xenapse.diagram"/>
+    <generic-icon name="x-office-document"/>
+  </mime-type>
+  <mime-type type="text/vnd.xenapse.stylesheet">
+    <comment>Xenapse Stylesheet</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.xcss"/>
+    <icon name="text-vnd.xenapse.stylesheet"/>
+    <generic-icon name="text-x-generic"/>
+  </mime-type>
+</mime-info>

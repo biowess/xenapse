@@ -1,0 +1,6 @@
+/* Shared theme for the MINDMAP examples. */
+diagram { node-gap: 24px; rank-gap: 56px; }
+node { fill: #FFFFFF; stroke: #475467; }
+.focus { fill: #EFF8FF; stroke: #175CD3; stroke-width: 2; }
+.later { fill: #F9FAFB; stroke: #98A2B3; color: #475467; }
+edge { stroke: #98A2B3; stroke-width: 1.5; arrowhead: none; }

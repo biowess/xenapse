@@ -1,0 +1,24 @@
+// A top-to-bottom flow with a nested decision, an END inside a branch,
+// and a join where the surviving branches meet again.
+IMPORT FLOW
+STYLESHEET "styles.xcss"
+
+START
+/ Customer submits ticket /
+< Is it a known issue? >
+IF YES {
+  [ Send help article ]
+  < Did that resolve it? >
+  IF YES {
+    ( Ticket closed )
+    END #resolved
+  } ELSE {
+    [ Escalate to an agent ] .highlight
+  }
+} ELSE {
+  | Run diagnostics |
+}
+// Join: the escalated branch and the diagnostics branch both arrive here.
+[ Assign to support agent ]
+DATABASE "Tickets"
+END

@@ -1,0 +1,92 @@
+name: Xenapse Windows Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    name: Build Windows x86_64
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install stable Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Read project version
+        shell: pwsh
+        run: |
+          $metadataOutput = cargo metadata --no-deps --format-version 1
+          if ($LASTEXITCODE -ne 0) {
+              throw "Cargo metadata failed."
+          }
+
+          $metadata = ($metadataOutput -join "`n") | ConvertFrom-Json
+          $packages = @($metadata.packages | Where-Object { $_.name -eq "xenapse-cli" })
+
+          if ($packages.Count -ne 1) {
+              throw "Expected exactly one xenapse-cli package."
+          }
+
+          $version = [string]$packages[0].version
+          if ([string]::IsNullOrWhiteSpace($version)) {
+              throw "Project version is empty."
+          }
+
+          "XENAPSE_VERSION=$version" >> $env:GITHUB_ENV
+          Write-Host "Building Xenapse version $version"
+
+      - name: Build and package portable application
+        shell: pwsh
+        run: ./scripts/package-windows.ps1
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup --yes --no-progress
+          if ($LASTEXITCODE -ne 0) {
+              throw "Inno Setup installation failed."
+          }
+
+      - name: Compile installer
+        shell: pwsh
+        run: |
+          $compiler = Get-ChildItem `
+              -Path "${env:ProgramFiles(x86)}\Inno Setup*" `
+              -Filter "ISCC.exe" `
+              -Recurse `
+              -ErrorAction SilentlyContinue |
+              Select-Object -First 1
+
+          if ($null -eq $compiler) {
+              throw "Inno Setup compiler (ISCC.exe) was not found."
+          }
+
+          Write-Host "Using $($compiler.FullName)"
+          & $compiler.FullName "packaging/windows/installer/xenapse.iss"
+
+          if ($LASTEXITCODE -ne 0) {
+              throw "Inno Setup compilation failed."
+          }
+
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: xenapse-windows-x86_64-${{ env.XENAPSE_VERSION }}
+          path: |
+            dist/xenapse-${{ env.XENAPSE_VERSION }}-windows-x86_64.zip
+            dist/xenapse-${{ env.XENAPSE_VERSION }}-windows-x86_64.zip.sha256
+            dist/xenapse-${{ env.XENAPSE_VERSION }}-windows-x86_64-setup.exe
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30

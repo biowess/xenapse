@@ -1,0 +1,39 @@
+// Emergency Department Acute Sepsis & Septic Shock Clinical Pathway
+// Implements the Surviving Sepsis Campaign Hour-1 Bundle
+IMPORT FLOW
+STYLESHEET "styles.xcss"
+DIRECTION TB
+
+START* #triage_start
+/ Patient arrives at ED & triage vitals recorded / .intake
+( Fever, tachycardia, or altered mental status noted )
+[ Calculate qSOFA & SIRS score ] .eval
+< "qSOFA score >= 2 or high clinical suspicion?" >
+IF YES {
+  ( Code Sepsis activated ) .urgent
+  | Initiate Hour-1 Resuscitation Bundle | .critical
+  [ Draw blood cultures before antibiotics ]
+  [ Administer broad-spectrum IV antimicrobials ]
+  [ Infuse 30 mL/kg balanced crystalloids ]
+  [ Measure serum lactate level ]
+  < "Persistent hypotension MAP < 65 or lactate >= 4 mmol/L?" >
+  IF YES {
+    [ Initiate IV vasopressors: Norepinephrine ] .critical
+    ( Septic shock confirmed ) .urgent
+    | Arrange emergent ICU transfer | .critical
+    DATABASE "ICU_Bed_Management"
+    [ Transfer patient to Critical Care Unit ]
+    ( Patient admitted to ICU )
+    END #icu_disposition
+  } ELSE {
+    [ Transfer to Step-Down Monitoring Unit ] .stabilized
+  }
+} ELSE {
+  [ Screen for alternative acute infection or organ failure ]
+  [ Standard diagnostic workup & symptomatic management ]
+}
+[ Continuous telemetry & hourly vitals reassessment ]
+DATABASE "Hospital_EHR_Registry"
+( Clinical stability achieved )
+[ Discharge with outpatient follow-up plan ]
+END* #ward_disposition

@@ -1,0 +1,24 @@
+// A RADIAL mind map (the default layout, stated explicitly here).
+IMPORT MINDMAP
+STYLESHEET "styles.xcss"
+LAYOUT RADIAL
+
+ROOT "Learn Rust" #goal {
+  "Fundamentals" .focus {
+    "Ownership and borrowing"
+    "Traits and generics"
+    "Error handling"
+  }
+  "Practice" {
+    "Small CLI tools" .focus
+    "Read other people's crates"
+  }
+  "Projects" .later {
+    "A diagram compiler"
+    "A web service"
+  }
+  "Community" .later {
+    "Forums"
+    "Local meetups"
+  }
+}

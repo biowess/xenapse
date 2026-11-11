@@ -1,0 +1,18 @@
+[package]
+name = "xenapse-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Command-line interface for the Xenapse diagram compiler"
+keywords = ["diagram", "svg", "cli", "compiler"]
+categories = ["command-line-utilities", "graphics"]
+
+[dependencies]
+xenapse-core = { path = "../xenapse-core", version = "0.1.0" }
+
+[[bin]]
+name = "xenapse"
+path = "src/main.rs"

@@ -1,0 +1,74 @@
+//! Stable diagnostic codes. Format: `XN-<FAMILY>-NNN`.
+
+pub const LEX_UNKNOWN_CHAR: &str = "XN-LEX-001";
+pub const LEX_UNTERMINATED_STRING: &str = "XN-LEX-002";
+pub const LEX_NEWLINE_IN_STRING: &str = "XN-LEX-003";
+pub const LEX_INVALID_ESCAPE: &str = "XN-LEX-004";
+pub const LEX_INVALID_IDENT: &str = "XN-LEX-005";
+pub const LEX_UNTERMINATED_SHAPE: &str = "XN-LEX-006";
+pub const LEX_EMPTY_SHAPE_LABEL: &str = "XN-LEX-007";
+pub const LEX_FLOW_SHAPE_IN_MINDMAP: &str = "XN-LEX-008";
+
+pub const SYN_MISSING_IMPORT: &str = "XN-SYN-001";
+pub const SYN_EXPECTED_MODULE: &str = "XN-SYN-002";
+pub const SYN_DUPLICATE_IMPORT: &str = "XN-SYN-003";
+pub const SYN_DIRECTIVE_WRONG_MODULE: &str = "XN-SYN-004";
+pub const SYN_DUPLICATE_DIRECTIVE: &str = "XN-SYN-005";
+pub const SYN_INVALID_DIRECTIVE_VALUE: &str = "XN-SYN-006";
+pub const SYN_UNEXPECTED_TOKEN: &str = "XN-SYN-007";
+pub const SYN_NESTING_TOO_DEEP: &str = "XN-SYN-008";
+pub const SYN_ELSE_WITHOUT_IF: &str = "XN-SYN-009";
+pub const SYN_IF_EXPECTED_YES: &str = "XN-SYN-010";
+pub const SYN_IF_NO: &str = "XN-SYN-011";
+pub const SYN_MISSING_ELSE: &str = "XN-SYN-012";
+pub const SYN_EMPTY_BLOCK: &str = "XN-SYN-013";
+pub const SYN_UNCLOSED_BLOCK: &str = "XN-SYN-014";
+pub const SYN_STRAY_RBRACE: &str = "XN-SYN-015";
+pub const SYN_MODULE_ISOLATION: &str = "XN-SYN-016";
+pub const SYN_DIRECTIVE_IN_BODY: &str = "XN-SYN-017";
+pub const SYN_EXPECTED_FLOW_STMT: &str = "XN-SYN-018";
+pub const SYN_ID_AFTER_CLASS: &str = "XN-SYN-019";
+pub const SYN_DUPLICATE_ID: &str = "XN-SYN-020";
+pub const SYN_UNEXPECTED_LABEL: &str = "XN-SYN-021";
+pub const SYN_EXPECTED_LABEL: &str = "XN-SYN-022";
+
+pub const MIND_MISSING_ROOT: &str = "XN-MIND-001";
+pub const MIND_SECOND_ROOT: &str = "XN-MIND-002";
+pub const MIND_EXTRA_CONTENT: &str = "XN-MIND-003";
+pub const MIND_UNQUOTED_LABEL: &str = "XN-MIND-004";
+pub const MIND_FLOW_CONSTRUCT: &str = "XN-MIND-005";
+pub const MIND_EXPECTED_LABEL: &str = "XN-MIND-006";
+
+pub const SEM_DUPLICATE_ID: &str = "XN-SEM-001";
+pub const SEM_RESERVED_CLASS: &str = "XN-SEM-002";
+
+pub const FLOW_MISSING_START: &str = "XN-FLOW-001";
+pub const FLOW_START_MISPLACED: &str = "XN-FLOW-002";
+pub const FLOW_MISSING_END: &str = "XN-FLOW-003";
+pub const FLOW_IF_WITHOUT_DECISION: &str = "XN-FLOW-004";
+pub const FLOW_DECISION_WITHOUT_IF: &str = "XN-FLOW-005";
+pub const FLOW_UNREACHABLE: &str = "XN-FLOW-006";
+pub const FLOW_DEAD_END: &str = "XN-FLOW-007";
+
+pub const CSS_UNKNOWN_CHAR: &str = "XN-CSS-001";
+pub const CSS_UNTERMINATED_COMMENT: &str = "XN-CSS-002";
+pub const CSS_UNTERMINATED_STRING: &str = "XN-CSS-003";
+pub const CSS_NEWLINE_IN_STRING: &str = "XN-CSS-004";
+pub const CSS_INVALID_ESCAPE: &str = "XN-CSS-005";
+pub const CSS_INVALID_NUMBER: &str = "XN-CSS-006";
+pub const CSS_AT_RULE: &str = "XN-CSS-007";
+pub const CSS_UNSUPPORTED_SELECTOR: &str = "XN-CSS-008";
+pub const CSS_UNEXPECTED_TOKEN: &str = "XN-CSS-009";
+pub const CSS_EXPECTED_SELECTOR: &str = "XN-CSS-010";
+pub const CSS_EXPECTED_OPEN_BRACE: &str = "XN-CSS-011";
+pub const CSS_EXPECTED_PROPERTY: &str = "XN-CSS-012";
+pub const CSS_EXPECTED_COLON: &str = "XN-CSS-013";
+pub const CSS_EXPECTED_VALUE: &str = "XN-CSS-014";
+pub const CSS_EXPECTED_SEMICOLON: &str = "XN-CSS-015";
+pub const CSS_UNCLOSED_RULE: &str = "XN-CSS-016";
+pub const CSS_STRAY_RBRACE: &str = "XN-CSS-017";
+pub const CSS_UNKNOWN_SELECTOR: &str = "XN-CSS-018";
+pub const CSS_UNSUPPORTED_PROPERTY: &str = "XN-CSS-019";
+pub const CSS_PROPERTY_TARGET: &str = "XN-CSS-020";
+pub const CSS_INVALID_VALUE: &str = "XN-CSS-021";
+pub const CSS_UNMATCHED_SELECTOR: &str = "XN-CSS-022";

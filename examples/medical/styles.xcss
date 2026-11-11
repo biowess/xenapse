@@ -1,0 +1,115 @@
+/* Clinical pathway theme for emergency medicine */
+diagram {
+    node-gap: 36px;
+    rank-gap: 52px;
+    branch-gap: 44px;
+    diagram-padding: 32px;
+}
+
+node {
+    fill: #ffffff;
+    stroke: #334155;
+    stroke-width: 1.5;
+    color: #0f172a;
+    font-family: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    padding: 12px;
+    min-width: 140px;
+    max-width: 250px;
+    border-radius: 8px;
+}
+
+.start {
+    fill: #ecfdf5;
+    stroke: #059669;
+    stroke-width: 2;
+    color: #064e3b;
+}
+
+.end {
+    fill: #f8fafc;
+    stroke: #475569;
+    stroke-width: 2;
+    color: #1e293b;
+}
+
+.event {
+    fill: #f0fdf4;
+    stroke: #16a34a;
+    color: #14532d;
+}
+
+.decision {
+    fill: #fffbeb;
+    stroke: #d97706;
+    stroke-width: 1.5;
+    color: #78350f;
+}
+
+.database {
+    fill: #f5f3ff;
+    stroke: #7c3aed;
+    stroke-width: 1.5;
+    color: #4c1d95;
+}
+
+.subprocess {
+    fill: #fdf2f8;
+    stroke: #db2777;
+    stroke-width: 2;
+    color: #831843;
+}
+
+.critical {
+    fill: #fef2f2;
+    stroke: #dc2626;
+    stroke-width: 2;
+    color: #7f1d1d;
+}
+
+.urgent {
+    fill: #fff1f2;
+    stroke: #e11d48;
+    stroke-width: 1.5;
+    color: #881337;
+}
+
+.intake {
+    fill: #eff6ff;
+    stroke: #2563eb;
+    color: #1e3a8a;
+}
+
+.eval {
+    fill: #f0fdfa;
+    stroke: #0d9488;
+    color: #134e4a;
+}
+
+.stabilized {
+    fill: #f0fdf4;
+    stroke: #15803d;
+    color: #166534;
+}
+
+edge {
+    stroke: #64748b;
+    stroke-width: 1.5;
+    arrowhead: triangle;
+    color: #334155;
+    font-size: 12px;
+}
+
+edge.yes {
+    stroke: #dc2626;
+    stroke-width: 2;
+    color: #b91c1c;
+}
+
+edge.no {
+    stroke: #0284c7;
+    stroke-width: 1.5;
+    color: #0369a1;
+}

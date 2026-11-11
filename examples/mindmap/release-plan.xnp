@@ -1,0 +1,19 @@
+// A TREE mind map using classes that the stylesheet picks up.
+IMPORT MINDMAP
+STYLESHEET "styles.xcss"
+LAYOUT TREE
+
+ROOT "Release 1.0" #release {
+  "Engineering" .focus {
+    "Freeze the language" .focus
+    "Fix open defects"
+  }
+  "Quality" {
+    "Example projects"
+    "Documentation" .later
+  }
+  "Launch" .later {
+    "Announcement"
+    "Packaging"
+  }
+}

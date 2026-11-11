@@ -1,0 +1,5 @@
+/target/
+/dist/
+
+# Generated diagram output
+/examples/**/*.svg

@@ -1,0 +1,9 @@
+/* Shared theme for the FLOW examples. Only selectors that match in both
+   examples are used, so neither file produces a "matches nothing" warning. */
+diagram { rank-gap: 44px; node-gap: 32px; }
+.start { fill: #ECFDF3; stroke: #067647; }
+.end { fill: #FEF3F2; stroke: #B42318; }
+.process { fill: #EFF8FF; stroke: #175CD3; }
+.database { fill: #F4F3FF; stroke: #5925DC; }
+.highlight { fill: #FFFAEB; stroke: #B54708; stroke-width: 2; }
+edge { stroke: #667085; stroke-width: 1.5; }

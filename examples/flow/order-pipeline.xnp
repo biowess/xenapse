@@ -1,0 +1,14 @@
+// A linear flow, laid out left to right.
+// Every statement connects to the next one in source order.
+IMPORT FLOW
+STYLESHEET "styles.xcss"
+DIRECTION LR
+
+START #begin
+/ Receive order /
+[ Validate items ] .highlight
+| Charge payment |
+DATABASE "Orders"
+( Order confirmed )
+[ Send receipt ]
+END
