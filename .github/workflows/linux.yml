@@ -37,7 +37,7 @@ jobs:
           ARCHIVE="$(find dist -maxdepth 1 -name 'xenapse-*-linux-x86_64.tar.gz' -print -quit)"
           test -n "$ARCHIVE"
 
-          sha256sum --check "${ARCHIVE}.sha256"
+          (cd dist && sha256sum --check "$(basename "${ARCHIVE}.sha256")")
 
           tar -tzf "$ARCHIVE" | grep -Fx "$(basename "${ARCHIVE%.tar.gz}")/install.sh"
           tar -tzf "$ARCHIVE" | grep -Fx "$(basename "${ARCHIVE%.tar.gz}")/uninstall.sh"
