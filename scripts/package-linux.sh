@@ -34,6 +34,11 @@ cp LICENSE "${DIST_DIR}/"
 cp NOTICE "${DIST_DIR}/"
 cp README.md "${DIST_DIR}/"
 
+# Copy interactive installer and uninstaller to the archive root
+cp install.sh "${DIST_DIR}/install.sh"
+cp uninstall.sh "${DIST_DIR}/uninstall.sh"
+chmod 755 "${DIST_DIR}/install.sh" "${DIST_DIR}/uninstall.sh"
+
 # Copy file type integration assets and installation scripts
 mkdir -p "${DIST_DIR}/packaging"
 cp -r packaging/linux/* "${DIST_DIR}/packaging/"

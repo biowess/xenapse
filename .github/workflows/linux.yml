@@ -1,0 +1,55 @@
+
+name: Xenapse Linux Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-linux:
+    name: Build Linux x86_64 (Ubuntu 22.04)
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install stable Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run workspace tests
+        run: cargo test --workspace
+
+      - name: Build and package portable application
+        run: bash scripts/package-linux.sh
+
+      - name: Verify release archive
+        run: |
+          set -euo pipefail
+
+          ARCHIVE="$(find dist -maxdepth 1 -name 'xenapse-*-linux-x86_64.tar.gz' -print -quit)"
+          test -n "$ARCHIVE"
+
+          sha256sum --check "${ARCHIVE}.sha256"
+
+          tar -tzf "$ARCHIVE" | grep -Fx "$(basename "${ARCHIVE%.tar.gz}")/install.sh"
+          tar -tzf "$ARCHIVE" | grep -Fx "$(basename "${ARCHIVE%.tar.gz}")/uninstall.sh"
+          tar -tzf "$ARCHIVE" | grep -Fx "$(basename "${ARCHIVE%.tar.gz}")/xenapse"
+
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: xenapse-linux-x86_64
+          path: |
+            dist/*.tar.gz
+            dist/*.tar.gz.sha256
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 30
