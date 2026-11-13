@@ -3,3 +3,4 @@
 
 # Generated diagram output
 /examples/**/*.svg
+releases/

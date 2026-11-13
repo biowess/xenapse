@@ -1,8 +1,30 @@
+<div align=center>
+<img src="assets/banner.png" alt="Xenapse Banner" width="600" />
+
 # Xenapse
+
+[![Rust](https://img.shields.io/badge/rust-stable-4B7571?style=flat&logo=rust&logoColor=EEF3F2&labelColor=172638)](https://www.rust-lang.org/)
+[![License](https://img.shields.io/badge/license-Apache--2.0-4B7571?style=flat&logoColor=EEF3F2&labelColor=172638)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/biowess/xenapse?style=flat&color=4B7571&logoColor=EEF3F2&labelColor=172638)](https://github.com/biowess/xenapse/releases)
+[![No deps](https://img.shields.io/badge/dependencies-none-4B7571?style=flat&labelColor=172638)](Cargo.toml)
+
+</div>
 
 Xenapse is a small text-first diagram language and a Rust engine that compiles it.
 You write a `.xnp` file (plus an optional `.xcss` stylesheet) and get one
 self-contained, deterministic SVG: the same input gives the same bytes on every host.
+
+## The Language
+
+A Xenapse diagram starts with an `IMPORT` declaring its module, then a body of
+layout instructions. Two modules are built in:
+
+| Module | Use |
+|---|---|
+| `FLOW` | Flowcharts — decisions, branches, loops |
+| `MINDMAP` | Radial concept maps |
+
+**Flow example** — decisions use `< … >`, steps use `[ … ]`:
 
 ```
 IMPORT FLOW
@@ -12,13 +34,36 @@ IF YES { [ Ship it ] } ELSE { [ Keep working ] }
 END
 ```
 
-## Build
+**Stylesheet** — visual properties live in a separate `.xcss` file, keeping the
+diagram source readable:
 
-Requires a stable Rust toolchain (edition 2021). There are no third-party dependencies.
+```
+STYLESHEET "style.xcss"
+IMPORT FLOW
+START
+[ Deploy ]
+END
+```
+
+The full grammar, all XCSS properties, node shapes, and diagnostic codes are in
+[`docs/DECISIONS.md`](docs/DECISIONS.md) (authoritative).
+[`docs/blueprint.md`](docs/blueprint.md) has the design rationale.
+
+## Install
+
+Pre-built binaries for Linux and Windows are in [`releases/`](releases/).
+Verify the `.sha256sum` before use.
 
 ```sh
-cargo build --release          # binary: target/release/xenapse
-cargo run -p xenapse-cli -- --help
+# Linux x86-64
+unzip releases/xenapse-linux-x86_64.zip
+./install.sh
+```
+
+Or build from source (no third-party dependencies, stable Rust required):
+
+```sh
+cargo build --release          # → target/release/xenapse
 ```
 
 ## CLI
@@ -29,13 +74,9 @@ xenapse check   <input.xnp> [--style <file.xcss>]
 ```
 
 - `compile` writes `<input stem>.svg` next to the input by default; `-o -` writes to stdout.
-- `check` runs the whole pipeline and writes nothing.
-- Stylesheet precedence: `--style` beats the `STYLESHEET "path"` directive (resolved
-  relative to the input file), which beats no stylesheet. A missing file is an error.
-- Diagnostics go to stderr. Exit codes: `0` success (warnings allowed), `1` the diagram
-  has errors (no SVG is written), `2` usage or I/O error.
-
-Try the examples (generated SVGs are git-ignored):
+- `check` runs the full pipeline and writes nothing — useful in CI.
+- Stylesheet precedence: `--style` > `STYLESHEET "path"` directive > none. A missing file is an error.
+- Diagnostics go to stderr. Exit codes: `0` success, `1` diagram errors, `2` usage/I/O error.
 
 ```sh
 xenapse check   examples/flow/support-ticket.xnp
@@ -44,38 +85,35 @@ xenapse compile examples/mindmap/release-plan.xnp -o release-plan.svg
 
 ## Library
 
-The core crate never touches the filesystem: you pass text in and get text out.
+The `xenapse-core` crate is filesystem-free: pass text in, get text out.
 
 ```rust
 use xenapse_core::{compile, CompileOptions};
 
-fn main() {
-    let source = "IMPORT FLOW\nSTART\n[ Hello ]\nEND\n";
-    let result = compile(source, None, &CompileOptions::default());
-    eprint!("{}", result.format_diagnostics());
-    if let Some(svg) = result.svg {
-        println!("{svg}");
-    }
+let source = "IMPORT FLOW\nSTART\n[ Hello ]\nEND\n";
+let result = compile(source, None, &CompileOptions::default());
+eprint!("{}", result.format_diagnostics());
+if let Some(svg) = result.svg {
+    println!("{svg}");
 }
 ```
 
-`result.svg` is `None` whenever any error diagnostic exists. `result.elements` maps every
-node and edge back to its source span. Pass stylesheet text as the second argument, and
-use `declared_stylesheet(source)` to find the `STYLESHEET` path a host should load.
+`result.svg` is `None` when any error diagnostic exists. `result.elements` maps every
+node and edge back to its source span. Pass stylesheet text as the second argument;
+use `declared_stylesheet(source)` to extract the `STYLESHEET` path for the host to load.
+
+## File Types
+
+Xenapse registers two OS MIME types:
+
+| Extension | Type | MIME |
+|---|---|---|
+| `.xnp` | Xenapse Diagram | `application/vnd.xenapse.diagram` |
+| `.xcss` | Xenapse Stylesheet | `text/vnd.xenapse.stylesheet` |
+
+Registration scripts and icons are under `packaging/`. See [`docs/file-types.md`](docs/file-types.md).
 
 ## Scope
 
-Two diagram modules only, `FLOW` and `MINDMAP`, and one output format, SVG. There is no
-editor, WASM build, PNG or PDF export. The language rules, grammar, XCSS properties and
-diagnostics are specified in [`docs/DECISIONS.md`](docs/DECISIONS.md), which takes
-precedence over [`docs/blueprint.md`](docs/blueprint.md).
-
-## File Types and OS Integration
-
-Xenapse registers two operating system file types:
-- `.xnp` — **Xenapse Diagram** (`application/vnd.xenapse.diagram`)
-- `.xcss` — **Xenapse Stylesheet** (`text/vnd.xenapse.stylesheet`)
-
-Optional registration scripts and icons are provided under `packaging/` for Linux and Windows.
-Registration does not set the CLI as a graphical editor. Default graphical opening will be handled separately by Xenapse Studio.
-See [`docs/file-types.md`](docs/file-types.md) for installation and uninstallation details.
+FLOW and MINDMAP modules, SVG output only. No editor, WASM target, PNG/PDF export.
+Xenapse Studio (a graphical editor) is planned separately.
